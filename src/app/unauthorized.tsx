@@ -8,7 +8,7 @@ export default function UnauthorizedPage() {
   const pathname = usePathname();
 
   return (
-    <main className="flex grow items-center justify-center px-4 text-center">
+    <main className="flex grow items-center justify-center px-4 text-center min-h-svh">
       <div className="space-y-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">401 - Unauthorized</h1>

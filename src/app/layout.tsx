@@ -1,21 +1,21 @@
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Better-Auth Tutorial",
-    absolute: "Better-Auth Tutorial by Coding in Flow",
+    template: "%s | Stakenet",
+    absolute: "Stakenet - AI Powered Sports Betting Analytics",
   },
   description:
-    "Learn how to handle authentication in Next.js using Better-Auth with this tutorial by Coding in Flow",
+    "AI Powered Sports Betting Analytics with Stakenet. Enhance your betting strategy using advanced data insights and machine learning algorithms.",
 };
 
 export default function RootLayout({
@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${outfit.className} antialiased`}>
+      <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
