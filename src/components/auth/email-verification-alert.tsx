@@ -1,20 +1,30 @@
-import { MailIcon } from "lucide-react";
+import { X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
 export const EmailVerificationAlert = () => {
     return (
-        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800/50 dark:bg-yellow-950/30">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <MailIcon className="size-5 text-yellow-600 dark:text-yellow-400" />
-                    <span className="text-yellow-800 dark:text-yellow-200">
+        <div className="rounded-xl border border-input/20 md:pl-4 pl-4 pr-4 md:pr-2 py-4 md:py-2 bg-muted/50 backdrop-blur-md">
+            <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex flex-col items-start w-full">
+                    <p className=" text-sm">
+                        Verify Email
+                    </p>
+                    <span className=" text-sm text-muted-foreground pr-8 md:pr-0 text-balance">
                         Please verify your email address to access all features.
                     </span>
                 </div>
-                <Button size="sm" asChild>
-                    <Link href="/verify-email">Verify Email</Link>
-                </Button>
+                <div className=" mt-6 md:mt-0 inline-flex items-center gap-2 w-full md:w-fit">
+                    <Button size="sm" className=" w-full md:w-fit" asChild>
+                        <Link href="/verify-email">Verify Email</Link>
+                    </Button>
+                    <Button size="icon" variant="ghost" className=" hidden md:flex">
+                        <X className=" size-5 text-muted-foreground" />
+                    </Button>
+                    <Button size="icon" variant="ghost" className=" absolute top-2 right-2 md:hidden">
+                        <X className=" size-5 text-muted-foreground" />
+                    </Button>
+                </div>
             </div>
         </div>
     );

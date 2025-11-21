@@ -14,8 +14,8 @@ export default async function DashboardPage() {
   if (!user) unauthorized();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4">
-      <SportyBetScraper />
+    <main className="mx-auto w-full max-w-6xl">
+      <SportyBetScraper user={user} />
     </main>
   );
 }
