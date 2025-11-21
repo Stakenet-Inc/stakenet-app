@@ -63,7 +63,7 @@ export function SportyBetScraper() {
 
                 <div className="space-y-6 px-4 pb-32 pt-20">
                     {isLoading && (
-                        <div className="space-y-4 border rounded-xl px-4 pt-4">
+                        <div className="space-y-4 border rounded-xl px-4 pt-4 pb-4">
                             <div className="flex items-center justify-between px-1">
                                 <h3 className="font-semibold text-muted-foreground animate-pulse">Loading Betslip Details...</h3>
                                 <Skeleton className="w-20 h-6" />
@@ -75,7 +75,7 @@ export function SportyBetScraper() {
                     )}
 
                     {bets && bets.length > 0 && (
-                        <div className="space-y-4 border rounded-xl px-4 pt-4">
+                        <div className="space-y-4 border rounded-xl px-4 pt-4 pb-4">
                             <div className="flex items-center justify-between px-1">
                                 <h3 className="font-semibold text-muted-foreground">Betslip Details</h3>
                                 <Badge variant="secondary">{bets.length} Selections</Badge>
@@ -89,10 +89,10 @@ export function SportyBetScraper() {
             </div>
 
 
-            <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 right-0 p-4 bg-linear-to-t from-background via-background to-transparent pt-10 z-50">
-                <div className="relative flex items-center gap-2 bg-muted/50 backdrop-blur-md p-1.5 rounded-full border shadow-sm focus-within:ring-1 focus-within:ring-ring transition-all hover:bg-muted/70">
+            <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 right-0 px-4 bg-linear-to-t from-background via-background to-transparent pb-8 pt-10 z-50">
+                <div className="relative flex items-center gap-2 bg-muted/50 backdrop-blur-md p-1 rounded-full transition-all hover:bg-muted/70 border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
                     <Input
-                        placeholder="Enter Booking Code or click to paste it"
+                        placeholder="Enter Booking Code"
                         value={bookingCode}
                         onChange={(e) => setBookingCode(e.target.value)}
                         disabled={isLoading}
@@ -116,7 +116,7 @@ export function SportyBetScraper() {
                         )}
                     </Button>
                 </div>
-                <p className="text-sm text-center text-muted-foreground mt-3">
+                <p className="text-sm text-center text-muted-foreground mt-4">
                     Predictions are insights, not guarantees.
                 </p>
             </div>
