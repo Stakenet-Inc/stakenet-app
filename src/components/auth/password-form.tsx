@@ -70,7 +70,6 @@ export function PasswordForm() {
               name="currentPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Current Password</FormLabel>
                   <FormControl>
                     <PasswordInput {...field} placeholder="Current password" />
                   </FormControl>
@@ -83,7 +82,6 @@ export function PasswordForm() {
               name="newPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
                   <FormControl>
                     <PasswordInput {...field} placeholder="New password" />
                   </FormControl>

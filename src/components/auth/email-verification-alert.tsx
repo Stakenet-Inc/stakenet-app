@@ -11,7 +11,7 @@ export const EmailVerificationAlert = () => {
     if (!isVisible) return null;
 
     return (
-        <div className="rounded-xl border border-input/20 md:pl-4 pl-4 pr-4 md:pr-2 py-4 md:py-2 bg-muted/50 backdrop-blur-md">
+        <div className="rounded-xl border border-input/20 md:pl-5 pl-4 pr-4 md:pr-2 py-4 md:py-4 bg-[#131313]">
             <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex flex-col items-start w-full">
                     <p className=" text-sm">

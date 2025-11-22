@@ -1,3 +1,4 @@
+import { Ban } from "lucide-react";
 import type { Metadata } from "next";
 import { ResetPasswordForm } from "../../../../components/auth/reset-password-form";
 
@@ -17,28 +18,15 @@ export default async function ResetPasswordPage({
   return (
     <main className="flex min-h-svh items-center justify-center px-4">
       {token ? (
-        <ResetPasswordUI token={token} />
+        <ResetPasswordForm token={token} />
       ) : (
-        <div role="alert" className="text-red-600">
-          Token is missing.
+        <div role="alert" className="text-sm text-destructive/10 border border-destructive/20 bg-destructive/10 h-9 line-clamp-1 flex items-center gap-2 px-2.5 rounded-lg ">
+          <Ban className=" size-4" />
+          <span>
+            Token is missin
+          </span>
         </div>
       )}
     </main>
-  );
-}
-
-interface ResetPasswordUIProps {
-  token: string;
-}
-
-function ResetPasswordUI({ token }: ResetPasswordUIProps) {
-  return (
-    <div className="w-full space-y-6">
-      <div className="space-y-2 text-center">
-        <h1 className="text-2xl font-semibold">Reset password</h1>
-        <p className="text-muted-foreground">Enter your new password below.</p>
-      </div>
-      <ResetPasswordForm token={token} />
-    </div>
   );
 }

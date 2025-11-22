@@ -22,6 +22,9 @@ export const signUpSchema = z
     passwordConfirmation: z
       .string()
       .min(1, { message: "Please confirm password" }),
+    age: z.boolean().refine((val) => val === true, {
+      message: "You must be at least 18 years old",
+    }),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Passwords do not match",

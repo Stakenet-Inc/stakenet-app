@@ -9,7 +9,7 @@ export default async function MainLayout({
   const user = session?.user;
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-black">
       <Sidebar user={user} />
       <div className="flex-1 flex flex-col transition-all duration-300">
         <Navbar />

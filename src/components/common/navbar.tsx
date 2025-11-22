@@ -1,11 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "@/lib/get-session";
-import { Ellipsis, Forward, SmilePlus } from "lucide-react";
-
-
-
-
+import { Ellipsis, Forward } from "lucide-react";
 import Image from "next/image";
+import { LogoutConfirmation } from "../auth/logout-confirmation";
 import MobileSidebar from "./mobile-sidebar";
 import UpgradePlans from "./upgrade-plans";
 import UpgradePlansMobile from "./upgrade-plans-mobile";
@@ -27,6 +24,7 @@ export async function Navbar() {
             <Forward />
             Invite Friends
           </Button>
+          <LogoutConfirmation />
           <Button variant="ghost" size="icon">
             <Ellipsis />
           </Button>

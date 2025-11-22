@@ -110,20 +110,21 @@ export function BetSlipScraper({ user }: { user: User }) {
 
                         <div className=" w-full flex flex-col items-center">
                             <div className="relative w-full h-40">
-                                <div className=" absolute inset-0 bg-linear-to-b from-transparent via-background/60 to-background z-20" />
+                                <div className=" absolute inset-0 bg-linear-to-b from-transparent via-black/60 to-black z-20" />
                                 <Image fill src={bookiesLogo} alt="Bookies" className="object-contain" />
                             </div>
 
-                            <div className=" z-20 -mt-12 relative max-w-3xl w-full flex items-center bg-muted/50 backdrop-blur-md p-0.5 rounded-full transition-all hover:bg-muted/70 border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
+                            <div className=" z-20 -mt-12 relative max-w-3xl w-full flex items-center bg-[#131313] p-0.5 rounded-full transition-all border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
                                 <Button size="icon" variant="ghost" className=" h-8 w-8 md:h-9 md:w-9 rounded-full shrink-0 ml-1 hover:bg-input/50">
                                     <Paperclip />
                                 </Button>
                                 <Input
                                     placeholder="Enter Booking Code"
                                     value={bookingCode}
-                                    onChange={(e) => setBookingCode(e.target.value)}
+                                    maxLength={12}
+                                    onChange={(e) => setBookingCode(e.target.value.toUpperCase())}
                                     disabled={isLoading}
-                                    className="border-none shadow-none bg-transparent dark:bg-transparent focus-visible:ring-0 px-2"
+                                    className="border-none shadow-none bg-transparent focus-visible:ring-0 px-2 h-11"
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter" && !isLoading) {
                                             handleScrape();
@@ -143,7 +144,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                     )}
                                 </Button>
                             </div>
-                            <p className="text-xs text-center text-muted-foreground mt-4">
+                            <p className="text-xs text-center text-muted-foreground mt-4 md:text-sm md:tracking-tight">
                                 Predictions are insights, not guarantees.
                             </p>
                         </div>
@@ -219,22 +220,23 @@ export function BetSlipScraper({ user }: { user: User }) {
                         </div>
                     </div>
 
-                    <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 right-0 px-4 bg-linear-to-t from-background via-background to-transparent pb-6 pt-10 z-50">
+                    <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 right-0 px-4 bg-linear-to-t from-black via-black to-transparent pb-6 pt-10 z-50">
                         {!user.emailVerified &&
                             <aside className=" mb-2">
                                 <EmailVerificationAlert />
                             </aside>
                         }
-                        <div className="relative max-w-3xl w-full flex items-center bg-muted/50 backdrop-blur-md p-0.5 rounded-full transition-all hover:bg-muted/70 border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
+                        <div className="relative max-w-3xl w-full flex items-center bg-[#131313] p-0.5 rounded-full transition-all border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
                             <Button size="icon" variant="ghost" className=" h-8 w-8 md:h-9 md:w-9 rounded-full shrink-0 ml-1 hover:bg-input/50">
                                 <Paperclip />
                             </Button>
                             <Input
                                 placeholder="Enter Booking Code"
                                 value={bookingCode}
-                                onChange={(e) => setBookingCode(e.target.value)}
+                                maxLength={12}
+                                onChange={(e) => setBookingCode(e.target.value.toUpperCase())}
                                 disabled={isLoading}
-                                className="border-none shadow-none bg-transparent dark:bg-transparent focus-visible:ring-0 px-2"
+                                className="border-none shadow-none bg-transparent focus-visible:ring-0 px-2 h-11"
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !isLoading) {
                                         handleScrape();
@@ -254,7 +256,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                 )}
                             </Button>
                         </div>
-                        <p className="text-xs text-center text-muted-foreground mt-4">
+                        <p className="text-xs text-center text-muted-foreground mt-4 md:text-sm md:tracking-tight">
                             Predictions are insights, not guarantees.
                         </p>
                     </div>

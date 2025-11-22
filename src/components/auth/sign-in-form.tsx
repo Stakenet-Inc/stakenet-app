@@ -1,10 +1,11 @@
 "use client";
 
+import stakenetLogo from "@/assets/stakenet.png";
 import { PasswordInput } from "@/components/auth/password-input";
 import { LoadingButton } from "@/components/common/loading-button";
-import { GitHubIcon } from "@/components/icons/GitHubIcon";
 import { GoogleIcon } from "@/components/icons/GoogleIcon";
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -24,16 +25,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 import { signInSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaApple, FaXTwitter } from "react-icons/fa6";
 import { toast } from "sonner";
 import { z } from "zod";
-
-
+import { Separator } from "../ui/separator";
 
 type SignInValues = z.infer<typeof signInSchema>;
 
@@ -92,87 +95,31 @@ export function SignInForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="w-full max-w-sm z-999">
       <CardHeader>
-        <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-        <CardDescription className="text-xs md:text-sm">
-          Enter your email below to login to your account
+        <div className=" size-9 md:size-10 relative mb-2 mt-2">
+          <Image fill src={stakenetLogo} alt="Stakenet" className="object-contain" />
+        </div>
+        <CardTitle>Welcome Back</CardTitle>
+        <CardDescription className=" text-balance">
+          We are happy to see you again. Enter your email below to login to your account
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="your@email.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center">
-                    <FormLabel>Password</FormLabel>
-                    <Link
-                      href="/forgot-password"
-                      className="ml-auto inline-block text-sm underline"
-                    >
-                      Forgot your password?
-                    </Link>
-                  </div>
-                  <FormControl>
-                    <PasswordInput
-                      autoComplete="current-password"
-                      placeholder="Password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="rememberMe"
-              render={({ field }) => (
-                <FormItem className="flex items-center gap-2">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel>Remember me</FormLabel>
-                </FormItem>
-              )}
-            />
-
-            {error && (
-              <div role="alert" className="text-sm text-red-600">
-                {error}
-              </div>
-            )}
-
-            <LoadingButton type="submit" className="w-full" loading={loading}>
-              Login
-            </LoadingButton>
-
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <div className="flex w-full flex-col items-center justify-between gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full gap-2"
+                disabled={loading}
+                onClick={() => handleSocialSignIn("github")}
+              >
+                <FaApple />
+                Sign in with Apple
+              </Button>
+
               <Button
                 type="button"
                 variant="outline"
@@ -191,18 +138,94 @@ export function SignInForm() {
                 disabled={loading}
                 onClick={() => handleSocialSignIn("github")}
               >
-                <GitHubIcon />
-                Sign in with Github
+                <FaXTwitter />
+                Sign in with X/Twitter
               </Button>
+
             </div>
+            <div className=" my-4">
+              <Separator orientation="horizontal" className=" opacity-50 w-full" />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="Email address"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <PasswordInput
+                      autoComplete="current-password"
+                      placeholder="Password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className=" inline-flex items-center w-full justify-between mb-4 mt-2">
+              <FormField
+                control={form.control}
+                name="rememberMe"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel className={cn("text-sm font-normal transition-colors", field.value ? "text-white" : "text-muted-foreground")}>
+                      Remember me
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+              <Link
+                href="/forgot-password"
+                className="text-sm font-normal text-muted-foreground hover:text-white"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            {error && (
+              <div role="alert" className="text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
+            <LoadingButton type="submit" className="w-full" loading={loading}>
+              Login
+            </LoadingButton>
+
+
           </form>
         </Form>
       </CardContent>
       <CardFooter>
-        <div className="flex w-full justify-center border-t pt-4">
-          <p className="text-muted-foreground text-center text-xs">
+        <div className="flex w-full justify-center">
+          <p className="text-muted-foreground text-center font-normal text-sm">
             Don&apos;t have an account?{" "}
-            <Link href="/sign-up" className="underline">
+            <Link href="/sign-up" className="hover:text-white">
               Sign up
             </Link>
           </p>
