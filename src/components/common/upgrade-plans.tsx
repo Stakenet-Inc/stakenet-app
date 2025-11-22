@@ -14,7 +14,6 @@ const UpgradePlans = () => {
 
     const handleContinue = async () => {
         if (selectedPlan === "free") {
-            // Just close the sheet (handled by SheetClose)
             return;
         }
 
