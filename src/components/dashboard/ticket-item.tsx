@@ -1,4 +1,4 @@
-import { type BetSelection } from "@/app/actions";
+import { BetSelection } from "@/actions/scraper";
 import { Badge } from "@/components/ui/badge";
 
 export function TicketItem({ bet }: { bet: BetSelection }) {
