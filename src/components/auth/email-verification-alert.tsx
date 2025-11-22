@@ -1,8 +1,15 @@
+"use client"
+
 import { X } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { Button } from "../ui/button";
 
 export const EmailVerificationAlert = () => {
+    const [isVisible, setIsVisible] = useState(true);
+
+    if (!isVisible) return null;
+
     return (
         <div className="rounded-xl border border-input/20 md:pl-4 pl-4 pr-4 md:pr-2 py-4 md:py-2 bg-muted/50 backdrop-blur-md">
             <div className="flex flex-col md:flex-row items-center justify-between">
@@ -18,10 +25,10 @@ export const EmailVerificationAlert = () => {
                     <Button size="sm" className=" w-full md:w-fit" asChild>
                         <Link href="/verify-email">Verify Email</Link>
                     </Button>
-                    <Button size="icon" variant="ghost" className=" hidden md:flex">
+                    <Button size="icon" variant="ghost" className=" hidden md:flex" onClick={() => setIsVisible(false)}>
                         <X className=" size-5 text-muted-foreground" />
                     </Button>
-                    <Button size="icon" variant="ghost" className=" absolute top-2 right-2 md:hidden">
+                    <Button size="icon" variant="ghost" className=" absolute top-2 right-2 md:hidden" onClick={() => setIsVisible(false)}>
                         <X className=" size-5 text-muted-foreground" />
                     </Button>
                 </div>

@@ -57,6 +57,14 @@ export const auth = betterAuth({
         type: "string",
         input: false,
       },
+      plan: {
+        type: "string",
+        input: false,
+      },
+      subscriptionStatus: {
+        type: "string",
+        input: false,
+      },
     },
   },
   hooks: {

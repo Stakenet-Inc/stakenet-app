@@ -15,12 +15,12 @@ export const sidebarTopItems = [
     },
     {
         icon: Sparkles,
-        href: "/",
+        href: "/analyse",
         label: "Analyse",
     },
     {
         icon: Ticket,
-        href: "/slips",
+        href: "/my-slips",
         label: "My Slips",
     },
     {

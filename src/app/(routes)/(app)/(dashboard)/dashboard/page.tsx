@@ -1,4 +1,4 @@
-import { SportyBetScraper } from "@/components/dashboard/sporty-bet-scraper";
+import { BetSlipScraper } from "@/components/dashboard/bet-slip-scraper";
 import { getServerSession } from "@/lib/get-session";
 import type { Metadata } from "next";
 import { unauthorized } from "next/navigation";
@@ -15,7 +15,7 @@ export default async function DashboardPage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl">
-      <SportyBetScraper user={user} />
+      <BetSlipScraper user={user} />
     </main>
   );
 }

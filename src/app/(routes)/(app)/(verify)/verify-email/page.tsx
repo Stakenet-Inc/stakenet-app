@@ -1,7 +1,7 @@
+import { ResendVerificationButton } from "@/components/auth/resend-verification-button";
 import { getServerSession } from "@/lib/get-session";
 import type { Metadata } from "next";
 import { redirect, unauthorized } from "next/navigation";
-import { ResendVerificationButton } from "../../../../components/auth/resend-verification-button";
 
 export const metadata: Metadata = {
   title: "Verify Email",
