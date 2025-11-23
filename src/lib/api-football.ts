@@ -170,3 +170,16 @@ export async function getPrediction(fixtureId: number) {
         return null;
     }
 }
+
+/**
+ * Parses team names from a match string (e.g., "Arsenal vs Chelsea")
+ * and returns an array of team names
+ */
+export function parseTeamNames(teamsString: string): string[] {
+    // Common separators: vs, v, -, @
+    const separators = /\s+(?:vs\.?|v\.?|-|@)\s+/i;
+    const teams = teamsString.split(separators);
+
+    return teams.map(team => team.trim()).filter(Boolean);
+}
+

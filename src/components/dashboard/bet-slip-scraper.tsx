@@ -205,8 +205,8 @@ export function BetSlipScraper({ user }: { user: User }) {
                                             ) : msg.bets && (
                                                 <div className=" space-y-2.5 md:space-y-4 border rounded-xl px-2 md:px-4 pt-2.5 md:pt-4 pb-2.5 md:pb-4">
                                                     <div className="flex items-center justify-between px-1">
-                                                        <h3 className="font-semibold text-muted-foreground text-sm">Betslip Details</h3>
-                                                        <Badge variant="secondary">{msg.bets.length} Selections</Badge>
+                                                        <h3 className="font-semibold text-muted-foreground text-sm">Bet Slip</h3>
+                                                        <Badge variant="secondary">{msg.bets.length}</Badge>
                                                     </div>
                                                     {msg.bets.map((bet, index) => (
                                                         <TicketItem key={index} bet={bet} />

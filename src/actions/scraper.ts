@@ -1,22 +1,28 @@
 "use server";
 
+import { getMatchLogos } from "@/actions/football";
+
 export interface BetSelection {
-    teams: string;
-    market: string;
-    selection: string;
-    odds: string;
+  teams: string;
+  market: string;
+  selection: string;
+  odds: string;
+  teamLogos?: {
+    home: string | null;
+    away: string | null;
+  };
 }
 
 export interface ScrapeResult {
-    success: boolean;
-    bets?: BetSelection[];
-    error?: string;
+  success: boolean;
+  bets?: BetSelection[];
+  error?: string;
 }
 
 export async function scrapeSportyBet(bookingCode: string): Promise<ScrapeResult> {
-    const browserless = process.env.BROWSERLESS_IO_API_KEY;
+  const browserless = process.env.BROWSERLESS_IO_API_KEY;
 
-    const script = `
+  const script = `
     export default async ({ page, context }) => {
       try {
         await page.goto('https://www.sportybet.com/', { waitUntil: 'networkidle0', timeout: 60000 });
@@ -71,33 +77,44 @@ export async function scrapeSportyBet(bookingCode: string): Promise<ScrapeResult
     };
   `;
 
-    try {
-        const response = await fetch(`https://production-sfo.browserless.io/function?token=${browserless}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                code: script,
-                context: { bookingCode },
-            }),
-        });
+  try {
+    const response = await fetch(`https://production-sfo.browserless.io/function?token=${browserless}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: script,
+        context: { bookingCode },
+      }),
+    });
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("Browserless error:", errorText);
-            return { success: false, error: `Browserless API error: ${response.status} ${response.statusText}` };
-        }
-
-        const data = await response.json();
-
-        if (data.error) {
-            return { success: false, error: data.error };
-        }
-
-        return { success: true, bets: data.bets };
-    } catch (error) {
-        console.error("Scraping failed:", error);
-        return { success: false, error: "Failed to connect to scraping service" };
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Browserless error:", errorText);
+      return { success: false, error: `Browserless API error: ${response.status} ${response.statusText}` };
     }
+
+    const data = await response.json();
+
+    if (data.error) {
+      return { success: false, error: data.error };
+    }
+
+    // Fetch team logos for each bet
+    const betsWithLogos = await Promise.all(
+      (data.bets || []).map(async (bet: BetSelection) => {
+        const logos = await getMatchLogos(bet.teams);
+        return {
+          ...bet,
+          teamLogos: logos,
+        };
+      })
+    );
+
+    return { success: true, bets: betsWithLogos };
+  } catch (error) {
+    console.error("Scraping failed:", error);
+    return { success: false, error: "Failed to connect to scraping service" };
+  }
 }

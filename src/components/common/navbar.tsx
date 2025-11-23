@@ -6,6 +6,7 @@ import { LogoutConfirmation } from "../auth/logout-confirmation";
 import MobileSidebar from "./mobile-sidebar";
 import UpgradePlans from "./upgrade-plans";
 import UpgradePlansMobile from "./upgrade-plans-mobile";
+import { BookieSelector } from "./bookie-selector";
 
 export async function Navbar() {
   const session = await getServerSession();
@@ -16,7 +17,10 @@ export async function Navbar() {
   return (
     <header className="sticky top-0 z-50 md:pl-20 md:pr-4 pt-4 pb-2 md:pb-0 md:pt-2 bg-linear-to-b from-background to-transparent">
       <div className="hidden md:flex items-center justify-between px-6 py-3 text-white relative">
-        <div className=" w-full flex items-center justify-center pl-28">
+        <div className="flex items-center gap-4">
+          <BookieSelector />
+        </div>
+        <div className="flex items-center justify-center flex-1">
           <UpgradePlans />
         </div>
         <div className="flex items-center gap-2">
