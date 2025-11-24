@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "media.api-sports.io",
+        hostname: "cdn.sportmonks.com",
       },
     ],
   },

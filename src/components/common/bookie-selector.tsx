@@ -17,6 +17,7 @@ import xBetLogo from "@/assets/1xbet.png";
 import bet365Logo from "@/assets/bet365.png";
 import betKingLogo from "@/assets/betking.png";
 import betwayLogo from "@/assets/betway.png";
+import footballComLogo from "@/assets/football.png";
 import mSportLogo from "@/assets/msport.png";
 import sportybetLogo from "@/assets/sportybet.png";
 
@@ -24,7 +25,7 @@ const bookies = [
     {
         id: "xbet",
         name: "1XBet",
-        url: "1xbet.com.gh",
+        url: "1xbet.com",
         logo: xBetLogo,
     },
     {
@@ -34,16 +35,22 @@ const bookies = [
         logo: betwayLogo,
     },
     {
+        id: "bet365",
+        name: "Bet365",
+        url: "bet365.com",
+        logo: bet365Logo,
+    },
+    {
         id: "betking",
         name: "Bet King",
         url: "betking.com",
         logo: betKingLogo,
     },
     {
-        id: "bet365",
-        name: "Bet364",
-        url: "bet365.com",
-        logo: bet365Logo,
+        id: "football",
+        name: "Football",
+        url: "football.com",
+        logo: footballComLogo,
     },
     {
         id: "MSport",
@@ -54,7 +61,7 @@ const bookies = [
     {
         id: "sportybet",
         name: "Sportybet",
-        url: "sportybet.com/gh",
+        url: "sportybet.com",
         logo: sportybetLogo,
     },
 ];
@@ -79,7 +86,7 @@ export function BookieSelector() {
                     variant="ghost"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-56 h-[38px] justify-between rounded-full bg-muted/50 border border-input/20 has-[>svg]:px-0 has-[>svg]:pl-1.5 has-[>svg]:pr-2.5"
+                    className="w-52 h-[38px] justify-between rounded-full bg-[#131313] border border-input/20 has-[>svg]:px-0 has-[>svg]:pl-1.5 has-[>svg]:pr-2.5"
                 >
                     <div className="flex items-center gap-3">
                         {currentBookie && (
@@ -88,7 +95,7 @@ export function BookieSelector() {
                                     fill
                                     src={currentBookie.logo}
                                     alt={currentBookie.name}
-                                    className="object-contain"
+                                    className="object-cover rounded-full"
                                 />
                             </div>
                         )}
@@ -99,7 +106,7 @@ export function BookieSelector() {
                     <ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="pt-0 px-0 pb-2 bg-[#131313] border border-input/20 w-56" align="start">
+            <PopoverContent className="pt-0 px-0 pb-2 bg-[#131313] border border-input/20 w-52" align="start">
                 <div className="space-y-2">
                     <div className="relative ">
                         <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
@@ -135,7 +142,7 @@ export function BookieSelector() {
                                             src={bookie.logo}
                                             alt={bookie.name}
                                             fill
-                                            className="object-contain"
+                                            className="object-cover rounded-full"
                                         />
                                     </div>
                                     <div className="flex flex-col -space-y-0.5">

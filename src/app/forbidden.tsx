@@ -13,7 +13,7 @@ export default function ForbiddenPage() {
         </div>
         <div>
           <Button asChild>
-            <Link href="/dashboard">Go to Dashboard</Link>
+            <Link href="/analyze">Go to Dashboard</Link>
           </Button>
         </div>
       </div>

@@ -1,16 +1,20 @@
 "use server";
 
-import { getMatchLogos } from "@/actions/football";
+import { getMatchLogos } from "@/actions/sportmonks";
+
+
 
 export interface BetSelection {
   teams: string;
   market: string;
   selection: string;
   odds: string;
+  isUnavailable?: boolean;
   teamLogos?: {
     home: string | null;
     away: string | null;
   };
+  status?: string;
 }
 
 export interface ScrapeResult {
@@ -61,11 +65,31 @@ export async function scrapeSportyBet(bookingCode: string): Promise<ScrapeResult
             const selectionEl = item.querySelector('.m-item-play span');
             const oddsEl = item.querySelector('.m-item-odds .m-text-main');
 
+            let teams = teamEl ? teamEl.innerText.trim() : '';
+            const market = marketEl ? marketEl.innerText.trim() : '';
+            const selection = selectionEl ? selectionEl.innerText.trim() : '';
+            const odds = oddsEl ? oddsEl.innerText.trim() : '';
+
+            let status = "08:00";
+            // Check for "Live" prefix in teams
+            if (teams.startsWith("Live")) {
+                status = "Live";
+                teams = teams.replace(/^Live\s*/, "").trim();
+            }
+
+            // Check if any field contains "unavailable" text or if odds are missing/empty
+            const hasUnavailableText = [teams, market, selection, odds].some(
+              field => field.toLowerCase().includes('unavailable')
+            );
+            const hasEmptyOdds = !odds || odds === '';
+
             return {
-              teams: teamEl ? teamEl.innerText.trim() : '',
-              market: marketEl ? marketEl.innerText.trim() : '',
-              selection: selectionEl ? selectionEl.innerText.trim() : '',
-              odds: oddsEl ? oddsEl.innerText.trim() : ''
+              teams,
+              market,
+              selection,
+              odds,
+              isUnavailable: hasUnavailableText || hasEmptyOdds,
+              status
             };
           }).filter(bet => bet.teams); // Filter out any empty items
         });
@@ -113,7 +137,7 @@ export async function scrapeSportyBet(bookingCode: string): Promise<ScrapeResult
     );
 
     return { success: true, bets: betsWithLogos };
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Scraping failed:", error);
     return { success: false, error: "Failed to connect to scraping service" };
   }

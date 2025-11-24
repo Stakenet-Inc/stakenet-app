@@ -1,7 +1,5 @@
 import {
     CircleFadingArrowUp,
-    Gem,
-    LayoutDashboard,
     Settings,
     Sparkles,
     Ticket
@@ -9,24 +7,14 @@ import {
 
 export const sidebarTopItems = [
     {
-        icon: LayoutDashboard,
-        href: "/dashboard",
-        label: "Dashboard",
-    },
-    {
         icon: Sparkles,
-        href: "/analyse",
-        label: "Analyse",
+        href: "/analyze",
+        label: "Analyze",
     },
     {
         icon: Ticket,
         href: "/my-slips",
         label: "My Slips",
-    },
-    {
-        icon: Gem,
-        href: "/predictions",
-        label: "Predictions",
     },
 ];
 

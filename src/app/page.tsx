@@ -7,7 +7,7 @@ export default function Home() {
       <div className="mx-auto max-w-3xl text-center">
         <div className="mx-auto mt-6 flex max-w-sm flex-col gap-3 sm:flex-row sm:justify-center">
           <Button asChild>
-            <Link href="/dashboard">Go to Dashboard</Link>
+            <Link href="/analyze">Go to Dashboard</Link>
           </Button>
           <Button asChild variant="outline">
             <Link href="/sign-in">Sign In</Link>

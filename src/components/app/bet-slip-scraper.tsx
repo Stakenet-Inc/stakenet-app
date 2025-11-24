@@ -7,21 +7,26 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUp, Paperclip, TicketSlash } from "lucide-react";
+import { ArrowUp, Plus, TicketSlash } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { TiMediaStop } from "react-icons/ti";
 import { toast } from "sonner";
 import { EmailVerificationAlert } from "../auth/email-verification-alert";
 import { TicketItem } from "./ticket-item";
 import { TicketSkeleton } from "./ticket-skeleton";
 
-
 import { BetSelection, scrapeSportyBet } from "@/actions/scraper";
+import { scrapeBetSlipFromImage } from "@/actions/scraper-vision";
 import { type User } from "@/lib/auth";
 
 export function BetSlipScraper({ user }: { user: User }) {
     const [bookingCode, setBookingCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const bottomRef = useRef<HTMLDivElement>(null);
+
+
     const [messages, setMessages] = useState<Array<{
         id: string;
         role: 'user' | 'system';
@@ -29,6 +34,7 @@ export function BetSlipScraper({ user }: { user: User }) {
         bets?: BetSelection[];
         isLoading?: boolean;
         isError?: boolean;
+        imageData?: string;
     }>>([]);
 
     const handleScrape = async () => {
@@ -56,6 +62,7 @@ export function BetSlipScraper({ user }: { user: User }) {
             role: 'system',
             isLoading: true
         }]);
+
 
         try {
             const result = await scrapeSportyBet(code);
@@ -90,6 +97,93 @@ export function BetSlipScraper({ user }: { user: User }) {
         }
     };
 
+    const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            toast.error("Please upload a valid image file");
+            return;
+        }
+
+        // Validate file size (max 5MB)
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        if (file.size > maxSize) {
+            toast.error("Image too large. Please upload an image under 5MB");
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            // Convert image to base64
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            await new Promise<void>((resolve, reject) => {
+                reader.onload = async () => {
+                    try {
+                        const base64Image = reader.result as string;
+
+                        // Add user message with image
+                        const userMsgId = Date.now().toString();
+                        setMessages(prev => [...prev, {
+                            id: userMsgId,
+                            role: 'user',
+                            content: 'Uploaded bet slip image',
+                            imageData: base64Image
+                        }]);
+
+                        // Add temporary loading message
+                        const loadingMsgId = (Date.now() + 1).toString();
+                        setMessages(prev => [...prev, {
+                            id: loadingMsgId,
+                            role: 'system',
+                            isLoading: true
+                        }]);
+
+                        // Process image with AI
+                        const result = await scrapeBetSlipFromImage(base64Image);
+
+                        if (result.success && result.bets) {
+                            // Update loading message to success
+                            setMessages(prev => prev.map(msg =>
+                                msg.id === loadingMsgId
+                                    ? { ...msg, isLoading: false, bets: result.bets, content: "Extracted bet slip from image" }
+                                    : msg
+                            ));
+                            toast.success(`Successfully extracted ${result.bets!.length} bets`);
+                        } else {
+                            // Update loading message to error
+                            setMessages(prev => prev.map(msg =>
+                                msg.id === loadingMsgId
+                                    ? { ...msg, isLoading: false, isError: true, content: result.error || "Failed to extract bet slip" }
+                                    : msg
+                            ));
+                            toast.error(result.error || "Failed to extract bet slip");
+                        }
+
+                        resolve();
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = () => reject(new Error("Failed to read image"));
+            });
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to process image");
+            setMessages(prev => prev.filter(msg => !msg.isLoading));
+        } finally {
+            setIsLoading(false);
+            // Reset file input
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        }
+    };
+
     return (
         <div className="flex flex-col h-full relative max-w-3xl mx-auto w-full">
             {messages.length === 0 ? (
@@ -114,9 +208,24 @@ export function BetSlipScraper({ user }: { user: User }) {
                                 <Image fill src={bookiesLogo} alt="Bookies" className="object-contain" />
                             </div>
 
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handleImageUpload}
+                                disabled={isLoading}
+                            />
                             <div className=" z-20 -mt-12 relative max-w-3xl w-full flex items-center bg-[#131313] p-0.5 rounded-full transition-all border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
-                                <Button size="icon" variant="ghost" className=" h-8 w-8 md:h-9 md:w-9 rounded-full shrink-0 ml-1 hover:bg-input/50">
-                                    <Paperclip />
+                                <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    className=" h-8 w-8 md:h-9 md:w-9 rounded-full shrink-0 ml-1 hover:bg-input/50"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={isLoading}
+                                    type="button"
+                                >
+                                    <Plus />
                                 </Button>
                                 <Input
                                     placeholder="Enter Booking Code"
@@ -138,7 +247,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                     className="rounded-full h-8 w-8 md:h-9 md:w-9 shrink-0 mr-0.5 md:mr-1"
                                 >
                                     {isLoading ? (
-                                        <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                        <TiMediaStop className=" size-4" />
                                     ) : (
                                         <ArrowUp className=" size-4" />
                                     )}
@@ -157,25 +266,39 @@ export function BetSlipScraper({ user }: { user: User }) {
                             {messages.map((msg) => (
                                 <div key={msg.id} className="space-y-4">
                                     {msg.role === 'user' ? (
-                                        <div className="flex items-center justify-between">
-                                            <div className="flex items-center gap-3">
-                                                <div className="relative size-9 md:size-10 rounded-xl overflow-hidden">
-                                                    {user?.image ? (
-                                                        <Image src={user.image} alt={user.name || "User"} fill className="object-cover" />
-                                                    ) : (
-                                                        <div className="w-full h-full bg-primary/10 flex items-center justify-center">
-                                                            <span className="text-xs font-bold text-primary">U</span>
-                                                        </div>
-                                                    )}
+                                        <div className="space-y-3">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="relative size-9 md:size-10 rounded-xl overflow-hidden">
+                                                        {user?.image ? (
+                                                            <Image src={user.image} alt={user.name || "User"} fill className="object-cover" />
+                                                        ) : (
+                                                            <div className="w-full h-full bg-primary/10 flex items-center justify-center">
+                                                                <span className="text-xs font-bold text-primary">U</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <span className="font-medium text-sm">{msg.content}</span>
                                                 </div>
-                                                <span className="font-medium text-sm">{msg.content}</span>
+                                                <Badge variant="outline" className="rounded-full pl-1 pr-2.5 md:pr-4 py-1 text-sm gap-2">
+                                                    <div className=" relative size-6">
+                                                        <Image fill src={sportybetLogo} alt="Sportybet Logo" />
+                                                    </div>
+                                                    Sportybet
+                                                </Badge>
                                             </div>
-                                            <Badge variant="outline" className="rounded-full pl-1 pr-2.5 md:pr-4 py-1 text-sm gap-2">
-                                                <div className=" relative size-6 md:size-7">
-                                                    <Image fill src={sportybetLogo} alt="Sportybet Logo" />
+                                            {msg.imageData && (
+                                                <div className="ml-4 md:ml-12 max-w-sm">
+                                                    <div className="relative w-full aspect-9/16 rounded-lg overflow-hidden border">
+                                                        <Image
+                                                            src={msg.imageData}
+                                                            alt="Bet slip"
+                                                            fill
+                                                            className="object-contain bg-muted/30"
+                                                        />
+                                                    </div>
                                                 </div>
-                                                Sportybet
-                                            </Badge>
+                                            )}
                                         </div>
                                     ) : (
                                         <div className=" space-y-4 md:space-y-6">
@@ -187,7 +310,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                                     {msg.isLoading ? (
                                                         <p className="text-muted-foreground animate-pulse">Fetching bet slip...</p>
                                                     ) : (
-                                                        <p className={msg.isError ? "text-destructive" : "text-primary"}>{msg.content}</p>
+                                                        <p className={msg.isError ? "text-destructive" : "text-white"}>{msg.content}</p>
                                                     )}
                                                 </div>
                                             </div>
@@ -226,9 +349,24 @@ export function BetSlipScraper({ user }: { user: User }) {
                                 <EmailVerificationAlert />
                             </aside>
                         }
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleImageUpload}
+                            disabled={isLoading}
+                        />
                         <div className="relative max-w-3xl w-full flex items-center bg-[#131313] p-0.5 rounded-full transition-all border border-input/20 focus-within:border-ring focus-within:ring-ring/50 focus-within:ring-2 aria-invalid:ring-destructive/20 aria-invalid:border-destructive">
-                            <Button size="icon" variant="ghost" className=" h-8 w-8 md:h-9 md:w-9 rounded-full shrink-0 ml-1 hover:bg-input/50">
-                                <Paperclip />
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                className=" h-8 w-8 md:h-9 md:w-9 rounded-full shrink-0 ml-1 hover:bg-input/50"
+                                onClick={() => fileInputRef.current?.click()}
+                                disabled={isLoading}
+                                type="button"
+                            >
+                                <Plus />
                             </Button>
                             <Input
                                 placeholder="Enter Booking Code"
@@ -250,7 +388,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                 className="rounded-full h-8 w-8 md:h-9 md:w-9 shrink-0 mr-0.5 md:mr-1"
                             >
                                 {isLoading ? (
-                                    <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                                    <TiMediaStop className=" size-6" />
                                 ) : (
                                     <ArrowUp className=" size-4" />
                                 )}
@@ -265,5 +403,3 @@ export function BetSlipScraper({ user }: { user: User }) {
         </div>
     );
 }
-
-

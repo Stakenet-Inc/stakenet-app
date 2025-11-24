@@ -11,7 +11,7 @@ export default async function AuthLayout({
   const session = await getServerSession();
   const user = session?.user;
 
-  if (user) redirect("/dashboard");
+  if (user) redirect("/analyze");
 
   return (
     <div className=" relative w-full h-screen">

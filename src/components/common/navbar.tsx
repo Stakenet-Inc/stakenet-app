@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 import { getServerSession } from "@/lib/get-session";
 import { Ellipsis, Forward } from "lucide-react";
 import Image from "next/image";
-import { LogoutConfirmation } from "../auth/logout-confirmation";
+import { BookieSelector } from "./bookie-selector";
 import MobileSidebar from "./mobile-sidebar";
 import UpgradePlans from "./upgrade-plans";
 import UpgradePlansMobile from "./upgrade-plans-mobile";
-import { BookieSelector } from "./bookie-selector";
 
 export async function Navbar() {
   const session = await getServerSession();
@@ -28,7 +27,6 @@ export async function Navbar() {
             <Forward />
             Invite Friends
           </Button>
-          <LogoutConfirmation />
           <Button variant="ghost" size="icon">
             <Ellipsis />
           </Button>

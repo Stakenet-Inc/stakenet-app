@@ -20,7 +20,7 @@ export async function POST(req: Request) {
             return new NextResponse("Missing plan or amount", { status: 400 });
         }
 
-        const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard`; // Redirect to dashboard after payment
+        const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/analyze`; // Redirect to dashboard after payment
 
         // NOTE: We are passing undefined for plan because "PRO" is not a valid Paystack plan code.
         // To enable subscriptions, you must create a plan on Paystack and use its code (e.g., PLN_...) here.

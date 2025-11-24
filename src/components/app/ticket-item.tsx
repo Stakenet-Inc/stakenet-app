@@ -2,7 +2,8 @@ import { BetSelection } from "@/actions/scraper";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { TeamLogoFallback } from "./team-logo-fallback";
-import { Separator } from "../ui/separator";
+
+
 export function TicketItem({ bet }: { bet: BetSelection }) {
     // Parse team names from the teams string
     const parseTeams = (teamsString: string) => {
@@ -17,15 +18,17 @@ export function TicketItem({ bet }: { bet: BetSelection }) {
     const { home, away } = parseTeams(bet.teams);
 
     return (
-        <div className="relative flex flex-col bg-card border rounded-xl shadow-sm transition-all hover:shadow-md group">
+        <div className={`relative flex flex-col bg-card border rounded-xl shadow-sm transition-all hover:shadow-md group ${bet.isUnavailable ? 'opacity-50' : ''}`}>
             <div className=" p-3 pb-4 md:p-4 md:pb-4 relative">
-                <div className="flex flex-col md:flex-row md:justify-between items-start gap-2 md:gap-4">
+                <div className="flex flex-col md:flex-row md:justify-between items-start md:items-end gap-2 md:gap-4">
                     <div className="space-y-1.5 md:space-y-2 flex flex-col w-full">
-                        <div className="flex items-center gap-2">
-                            <span>08:00</span>
-                            <div className="h-4">
-                                <Separator orientation="vertical" />
-                            </div>
+                        <div className="flex flex-col items-start gap-1">
+                            {bet.status === "Live" && (
+                                <span className="flex items-center gap-1.5">
+                                    <div className=" size-2 bg-primary animate-pulse rounded-full" />
+                                    {bet.status || ""}
+                                </span>
+                            )}
                             <div className="flex flex-col items-start gap-0.5 flex-wrap">
                                 {/* Home Team */}
                                 <div className="flex items-center gap-2">
@@ -41,7 +44,7 @@ export function TicketItem({ bet }: { bet: BetSelection }) {
                                     ) : (
                                         <TeamLogoFallback teamName={home} />
                                     )}
-                                    <span className="font-medium text-sm md:text-base">{home}</span>
+                                    <span className="font-medium text-sm ">{home}</span>
                                 </div>
 
                                 {/* Away Team */}
@@ -58,17 +61,19 @@ export function TicketItem({ bet }: { bet: BetSelection }) {
                                     ) : (
                                         <TeamLogoFallback teamName={away} />
                                     )}
-                                    <span className="font-medium text-sm md:text-base">{away}</span>
+                                    <span className="font-medium text-sm ">{away}</span>
                                 </div>
                             </div>
                         </div>
                         {/* Teams with logos */}
                     </div>
-                    <div className="md:shrink-0">
+                    <div className="flex flex-col gap-1 items-end">
+                        <p className=" text-sm text-muted-foreground">Market</p>
                         <Badge variant="outline" className="bg-background/50 backdrop-blur">
                             {bet.market}
                         </Badge>
                     </div>
+
                 </div>
             </div>
 
@@ -88,11 +93,17 @@ export function TicketItem({ bet }: { bet: BetSelection }) {
                 <div className="flex justify-between items-end">
                     <div className="flex flex-col">
                         <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Selection</span>
-                        <p className="font-semibold  text-sm md:text-base text-primary">{bet.selection}</p>
+                        <p className="font-semibold  text-sm  text-primary">{bet.selection}</p>
                     </div>
                     <div className="text-right flex flex-col">
                         <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Odds</span>
-                        <div className=" text-sm md:text-base font-semibold tracking-tight text-primary">{bet.odds}</div>
+                        {bet.isUnavailable ? (
+                            <Badge variant="destructive" className="bg-destructive/80 mt-1">
+                                Unavailable
+                            </Badge>
+                        ) : (
+                            <div className=" text-sm  font-semibold tracking-tight text-primary">{bet.odds}</div>
+                        )}
                     </div>
                 </div>
             </div>
