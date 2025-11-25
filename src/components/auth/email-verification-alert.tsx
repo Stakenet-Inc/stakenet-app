@@ -11,7 +11,7 @@ export const EmailVerificationAlert = () => {
     if (!isVisible) return null;
 
     return (
-        <div className="rounded-xl border border-input/20 md:pl-5 pl-4 pr-4 md:pr-2 py-4 md:py-4 bg-[#131313]">
+        <div className="rounded-xl border border-input/20 md:pl-5 pl-4 pr-4 md:pr-2 py-4 md:py-4 bg-[#131313] relative">
             <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="flex flex-col items-start w-full">
                     <p className=" text-sm">
@@ -28,7 +28,7 @@ export const EmailVerificationAlert = () => {
                     <Button size="icon" variant="ghost" className=" hidden md:flex" onClick={() => setIsVisible(false)}>
                         <X className=" size-5 text-muted-foreground" />
                     </Button>
-                    <Button size="icon" variant="ghost" className=" absolute top-2 right-2 md:hidden" onClick={() => setIsVisible(false)}>
+                    <Button size="icon" variant="ghost" className=" absolute top-4 right-4 md:hidden" onClick={() => setIsVisible(false)}>
                         <X className=" size-5 text-muted-foreground" />
                     </Button>
                 </div>

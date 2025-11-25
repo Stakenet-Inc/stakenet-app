@@ -3,6 +3,7 @@
 import stakenetLogo from "@/assets/stakenet.png";
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetTitle,
     SheetTrigger
@@ -38,22 +39,23 @@ export default function MobileSidebar() {
                         {sidebarTopItems.map((item) => {
                             const isActive = pathname === item.href;
                             return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={cn(
-                                        " relative flex items-center gap-2.5 px-4 text-sm h-10 rounded-xl transition-all hover:bg-white/10",
-                                        isActive
-                                            ? "bg-primary/10 text-primary hover:bg-primary/10"
-                                            : "text-white/70 hover:text-white"
-                                    )}
-                                >
-                                    <item.icon className="h-5 w-5" />
-                                    <span className="font-medium">{item.label}</span>
-                                    {isActive && (
-                                        <div className="absolute -left-3 h-2 w-1 rounded-r-full bg-primary" />
-                                    )}
-                                </Link>
+                                <SheetClose asChild key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        className={cn(
+                                            " relative flex items-center gap-2.5 px-4 text-sm h-10 rounded-xl transition-all hover:bg-white/10",
+                                            isActive
+                                                ? "bg-primary/10 text-primary hover:bg-primary/10"
+                                                : "text-white/70 hover:text-white"
+                                        )}
+                                    >
+                                        <item.icon className="h-5 w-5" />
+                                        <span className="font-medium">{item.label}</span>
+                                        {isActive && (
+                                            <div className="absolute -left-3 h-2 w-1 rounded-r-full bg-primary" />
+                                        )}
+                                    </Link>
+                                </SheetClose>
                             );
                         })}
                     </nav>
@@ -62,19 +64,20 @@ export default function MobileSidebar() {
                         {sidebarBottomItems.map((item) => {
                             const isActive = pathname === item.href;
                             return (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={cn(
-                                        " relative flex items-center gap-2.5 px-4 text-sm h-10 rounded-xl transition-all hover:bg-white/10",
-                                        isActive
-                                            ? "bg-primary/10 text-primary hover:bg-primary/10"
-                                            : "text-white/70 hover:text-white"
-                                    )}
-                                >
-                                    <item.icon className="h-5 w-5" />
-                                    <span className="font-medium">{item.label}</span>
-                                </Link>
+                                <SheetClose asChild key={item.href}>
+                                    <Link
+                                        href={item.href}
+                                        className={cn(
+                                            " relative flex items-center gap-2.5 px-4 text-sm h-10 rounded-xl transition-all hover:bg-white/10",
+                                            isActive
+                                                ? "bg-primary/10 text-primary hover:bg-primary/10"
+                                                : "text-white/70 hover:text-white"
+                                        )}
+                                    >
+                                        <item.icon className="h-5 w-5" />
+                                        <span className="font-medium">{item.label}</span>
+                                    </Link>
+                                </SheetClose>
                             );
                         })}
                     </div>

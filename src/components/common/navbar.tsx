@@ -40,7 +40,7 @@ export async function Navbar() {
         <div className=" relative size-9 overflow-clip rounded-xl">
           <Image
             fill
-            src={user.image || `https://ui-avatars.com/api/?name=${user.name || "User"}`}
+            src={user.image || "https://unavatar.io/deviantart/spyed"}
             alt={user.name || "User"}
             className="rounded-xl scale-105 object-cover"
           />

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUp, Plus, TicketSlash, Zap } from "lucide-react";
+import { ArrowUp, Plus, TicketCheck, TicketSlash, Zap } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { TiMediaStop } from "react-icons/ti";
@@ -322,9 +322,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                                         {user?.image ? (
                                                             <Image src={user.image} alt={user.name || "User"} fill className="object-cover" />
                                                         ) : (
-                                                            <div className="w-full h-full bg-primary/10 flex items-center justify-center">
-                                                                <span className="text-xs font-bold text-primary">U</span>
-                                                            </div>
+                                                            <Image src="https://unavatar.io/deviantart/spyed" alt="User" fill className="object-cover" />
                                                         )}
                                                     </div>
                                                     <span className="font-medium text-sm">{msg.content}</span>
@@ -400,25 +398,35 @@ export function BetSlipScraper({ user }: { user: User }) {
 
                                                     {/* Predictions Section */}
                                                     {msg.predictions && msg.predictions.length > 0 && (
-                                                        <div className=" space-y-2.5 md:space-y-4 border rounded-xl px-2 md:px-4 pt-2.5 md:pt-4 pb-2.5 md:pb-4 bg-primary/5">
-                                                            <div className="flex items-center justify-between px-1">
-                                                                <h3 className="font-medium text-muted-foreground text-sm">Predictions</h3>
-                                                                <Badge variant="secondary">Matches {msg.predictions.filter(p => p !== null).length} Analyzed</Badge>
+                                                        <>
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="relative size-9 md:size-10 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+                                                                    <TicketCheck className="text-primary size-5" />
+                                                                </div>
+                                                                <div className="space-y-1 pt-1 text-sm">
+                                                                    <p className="text-white">Match Predictions</p>
+                                                                </div>
                                                             </div>
-                                                            {msg.predictions.map((prediction, index) =>
-                                                                prediction ? (
-                                                                    <PredictionItem
-                                                                        key={index}
-                                                                        prediction={prediction}
-                                                                        teamLogos={msg.bets?.[index]?.teamLogos}
-                                                                    />
-                                                                ) : (
-                                                                    <div key={index} className="p-4 border rounded-xl bg-card text-center">
-                                                                        <p className="text-sm text-muted-foreground">Prediction unavailable for this match</p>
-                                                                    </div>
-                                                                )
-                                                            )}
-                                                        </div>
+                                                            <div className=" space-y-2.5 md:space-y-4 border rounded-xl px-2 md:px-4 pt-2.5 md:pt-4 pb-2.5 md:pb-4 bg-primary/5">
+                                                                <div className="flex items-center justify-between px-1">
+                                                                    <h3 className="font-medium text-muted-foreground text-sm">Predictions</h3>
+                                                                    <Badge variant="secondary">Matches {msg.predictions.filter(p => p !== null).length} Analyzed</Badge>
+                                                                </div>
+                                                                {msg.predictions.map((prediction, index) =>
+                                                                    prediction ? (
+                                                                        <PredictionItem
+                                                                            key={index}
+                                                                            prediction={prediction}
+                                                                            teamLogos={msg.bets?.[index]?.teamLogos}
+                                                                        />
+                                                                    ) : (
+                                                                        <div key={index} className="p-4 border rounded-xl bg-card text-center">
+                                                                            <p className="text-sm text-muted-foreground">Prediction unavailable for this match</p>
+                                                                        </div>
+                                                                    )
+                                                                )}
+                                                            </div>
+                                                        </>
                                                     )}
                                                 </>
                                             )}
@@ -429,7 +437,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                         </div>
                     </div>
 
-                    <div className="fixed bottom-0 max-w-3xl w-full mx-auto  px-4 bg-linear-to-t from-black via-black to-transparent pb-6 pt-10 z-50">
+                    <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 md:left-auto  px-4 bg-linear-to-t from-black via-black to-transparent pb-6 pt-10 z-50">
                         {!user.emailVerified &&
                             <aside className=" mb-2">
                                 <EmailVerificationAlert />
