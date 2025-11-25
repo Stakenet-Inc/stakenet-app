@@ -20,7 +20,7 @@ export function TicketItem({ bet }: { bet: BetSelection }) {
     return (
         <div className={`relative flex flex-col bg-card border rounded-xl shadow-sm transition-all hover:shadow-md group ${bet.isUnavailable ? 'opacity-50' : ''}`}>
             <div className=" p-3 pb-4 md:p-4 md:pb-4 relative">
-                <div className="flex flex-col md:flex-row md:justify-between items-start md:items-end gap-2 md:gap-4">
+                <div className="flex flex-row justify-between items-end">
                     <div className="space-y-1.5 md:space-y-2 flex flex-col w-full">
                         <div className="flex flex-col items-start gap-1">
                             {bet.status === "Live" && (

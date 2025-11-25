@@ -27,10 +27,11 @@ export default function MobileSidebar() {
             <SheetContent side="left" className="w-72 bg-background p-0">
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 <div className="flex flex-col h-full py-6 text-white px-4">
-                    <div className="mb-8 px-4 flex items-center justify-start">
+                    <div className="mb-8 px-4 flex items-center gap-2 justify-start">
                         <div className="relative size-7">
                             <Image fill src={stakenetLogo} alt="Stakenet" className="object-contain" />
                         </div>
+                        <span className=" text-xl font-medium tracking-tight">Stakenet</span>
                     </div>
 
                     <nav className="flex flex-1 flex-col gap-2">

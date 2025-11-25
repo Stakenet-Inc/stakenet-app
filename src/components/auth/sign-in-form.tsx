@@ -28,6 +28,7 @@ import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { signInSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Ban } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -208,8 +209,11 @@ export function SignInForm() {
             </div>
 
             {error && (
-              <div role="alert" className="text-sm text-red-600">
-                {error}
+              <div role="alert" className="text-sm text-destructive border border-destructive/20 bg-destructive/10 h-9 line-clamp-1 flex items-center gap-2 px-2.5 rounded-lg ">
+                <Ban className=" size-4" />
+                <span>
+                  {error}
+                </span>
               </div>
             )}
 

@@ -9,13 +9,16 @@ import {
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Toaster as Sonner, type ToasterProps } from "sonner"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
 
+  const isMobile = useIsMobile()
+
   return (
     <Sonner
-      position="top-center"
+      position={isMobile ? "bottom-center" : "bottom-right"}
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       icons={{

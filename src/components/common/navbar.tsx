@@ -5,7 +5,6 @@ import Image from "next/image";
 import { BookieSelector } from "./bookie-selector";
 import MobileSidebar from "./mobile-sidebar";
 import UpgradePlans from "./upgrade-plans";
-import UpgradePlansMobile from "./upgrade-plans-mobile";
 
 export async function Navbar() {
   const session = await getServerSession();
@@ -36,7 +35,7 @@ export async function Navbar() {
       <div className=" md:hidden w-full flex items-center justify-between px-4">
         <MobileSidebar />
 
-        <UpgradePlansMobile />
+        <BookieSelector />
 
         <div className=" relative size-9 overflow-clip rounded-xl">
           <Image

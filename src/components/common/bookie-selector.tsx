@@ -20,6 +20,7 @@ import betwayLogo from "@/assets/betway.png";
 import footballComLogo from "@/assets/football.png";
 import mSportLogo from "@/assets/msport.png";
 import sportybetLogo from "@/assets/sportybet.png";
+import { useIsMobile } from "@/hooks/use-mobile"
 
 const bookies = [
     {
@@ -71,6 +72,8 @@ export function BookieSelector() {
     const [selectedBookie, setSelectedBookie] = React.useState("sportybet");
     const [searchQuery, setSearchQuery] = React.useState("");
 
+    const isMobile = useIsMobile()
+
     const currentBookie = bookies.find((bookie) => bookie.id === selectedBookie);
 
     const filteredBookies = bookies.filter(
@@ -86,9 +89,9 @@ export function BookieSelector() {
                     variant="ghost"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-52 h-[38px] justify-between rounded-full bg-[#131313] border border-input/20 has-[>svg]:px-0 has-[>svg]:pl-1.5 has-[>svg]:pr-2.5"
+                    className=" w-fit md:w-52 h-[38px] justify-between rounded-full bg-[#131313] border border-input/20 has-[>svg]:px-0 has-[>svg]:pl-1.5 has-[>svg]:pr-2.5"
                 >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 md:gap-3">
                         {currentBookie && (
                             <div className="relative size-6 rounded-full">
                                 <Image
@@ -99,14 +102,17 @@ export function BookieSelector() {
                                 />
                             </div>
                         )}
-                        <span className=" text-sm text-white/80">
+                        <span className=" text-sm text-white/80 hidden md:block">
                             {currentBookie?.name} Bookie
+                        </span>
+                        <span className=" text-sm text-white/80 md:hidden">
+                            {currentBookie?.name}
                         </span>
                     </div>
                     <ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="pt-0 px-0 pb-2 bg-[#131313] border border-input/20 w-52" align="start">
+            <PopoverContent className="pt-0 px-0 pb-2 bg-[#131313] border border-input/20 w-52" align={isMobile ? "center" : "start"}>
                 <div className="space-y-2">
                     <div className="relative ">
                         <Search className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />

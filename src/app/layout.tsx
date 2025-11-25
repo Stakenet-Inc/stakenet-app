@@ -14,6 +14,10 @@ export const metadata: Metadata = {
     "AI Powered Sports Betting Analytics with Stakenet. Enhance your betting strategy using advanced data insights and machine learning algorithms.",
 };
 
+export const viewport = {
+  maximumScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -63,13 +63,51 @@ export async function scrapeBetSlipFromImage(base64Image: string): Promise<Visio
             };
         }
 
+        // Check if the slip is outdated (older than 1 day)
+        let isOutdated = false;
+        if (parsedData.date) {
+            try {
+                // Parse date format "DD/MM/YYYY HH:mm"
+                const [datePart, timePart] = parsedData.date.split(' ');
+                if (datePart) {
+                    const [day, month, year] = datePart.split('/').map(Number);
+
+                    // Create date object (months are 0-indexed in JS)
+                    const slipDate = new Date(year, month - 1, day);
+
+                    // Add time if available
+                    if (timePart) {
+                        const [hours, minutes] = timePart.split(':').map(Number);
+                        slipDate.setHours(hours, minutes);
+                    }
+
+                    const oneDayAgo = new Date();
+                    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
+                    // Reset time portion for pure date comparison if needed, 
+                    // but user asked for "time is in the past by one day", so full timestamp comparison is better.
+                    // However, "checking current day" implies we might want to just check if the day is < yesterday.
+                    // Let's stick to a 24h check or just strict date check.
+                    // "if the time is in the past by one day by checking current day"
+                    // Let's check if the slip date is before yesterday.
+
+                    if (slipDate < oneDayAgo) {
+                        isOutdated = true;
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to parse date:", parsedData.date, e);
+            }
+        }
+
         // Fetch team logos for each bet
         const betsWithLogos = await Promise.all(
             parsedData.bets.map(async (bet: BetSelection) => {
                 const logos = await getMatchLogos(bet.teams);
 
                 // Check if odds are missing or empty to mark as unavailable
-                const isUnavailable = !bet.odds || bet.odds === '';
+                // Also mark as unavailable if the slip is outdated
+                const isUnavailable = (!bet.odds || bet.odds === '') || isOutdated;
 
                 return {
                     ...bet,

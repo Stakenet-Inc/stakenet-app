@@ -10,7 +10,7 @@ interface SendEmailValues {
 
 export async function sendEmail({ to, subject, text }: SendEmailValues) {
   await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
+    from: 'Stakenet <onboarding@stakenet.app>',
     to,
     subject,
     text,

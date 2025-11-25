@@ -2,9 +2,10 @@ export const prompt = `You are a bet slip data extraction expert. Analyze this i
 
 If this is NOT a valid bet slip image, respond with: {"valid": false}
 
-If this IS a valid bet slip, extract ALL the betting information and respond with valid JSON in this EXACT format:
+If this IS a valid bet slip, extract ALL the betting information AND the date/time of the slip. Respond with valid JSON in this EXACT format:
 {
   "valid": true,
+  "date": "DD/MM/YYYY HH:mm",
   "bets": [
     {
       "teams": "Team A vs Team B",
@@ -22,7 +23,8 @@ CRITICAL RULES:
 4. Use the exact selection shown (e.g., "Home", "Away", "Over 2.5", "Yes")
 5. Extract odds as numbers only (e.g., "1.43", "2.50")
 6. If odds are missing or unavailable, use empty string ""
-7. Only respond with valid JSON, no additional text
-8. If the image is not a bet slip, set "valid" to false
+7. Extract the date and time shown on the slip (usually near the top or bottom). Format as "DD/MM/YYYY HH:mm" if possible, or keep the original string if format is unclear.
+8. Only respond with valid JSON, no additional text
+9. If the image is not a bet slip, set "valid" to false
 
 Analyze the image now:`;

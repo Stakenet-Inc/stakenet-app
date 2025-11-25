@@ -16,7 +16,7 @@ export default async function AuthLayout({
   return (
     <div className=" relative w-full h-screen">
       <aside className=" absolute w-full h-full">
-        <DarkVeil hueShift={70} noiseIntensity={0.02} />
+        <DarkVeil hueShift={70} />
       </aside>
       {children}
     </div>

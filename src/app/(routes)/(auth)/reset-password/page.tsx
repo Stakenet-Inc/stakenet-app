@@ -20,7 +20,7 @@ export default async function ResetPasswordPage({
       {token ? (
         <ResetPasswordForm token={token} />
       ) : (
-        <div role="alert" className="text-sm text-destructive/10 border border-destructive/20 bg-destructive/10 h-9 line-clamp-1 flex items-center gap-2 px-2.5 rounded-lg ">
+        <div role="alert" className="text-sm text-destructive border border-destructive/20 bg-destructive/10 h-9 line-clamp-1 flex items-center gap-2 px-2.5 rounded-lg ">
           <Ban className=" size-4" />
           <span>
             Token is missin

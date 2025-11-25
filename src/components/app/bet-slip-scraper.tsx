@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowUp, Plus, TicketSlash } from "lucide-react";
+import { ArrowUp, Plus, TicketSlash, Zap } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import { TiMediaStop } from "react-icons/ti";
@@ -16,15 +16,16 @@ import { EmailVerificationAlert } from "../auth/email-verification-alert";
 import { TicketItem } from "./ticket-item";
 import { TicketSkeleton } from "./ticket-skeleton";
 
+import { getPredictionsForMatches, MatchPrediction } from "@/actions/predictions";
 import { BetSelection, scrapeSportyBet } from "@/actions/scraper";
 import { scrapeBetSlipFromImage } from "@/actions/scraper-vision";
 import { type User } from "@/lib/auth";
+import { PredictionItem } from "./prediction-item";
 
 export function BetSlipScraper({ user }: { user: User }) {
     const [bookingCode, setBookingCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const bottomRef = useRef<HTMLDivElement>(null);
 
 
     const [messages, setMessages] = useState<Array<{
@@ -32,10 +33,58 @@ export function BetSlipScraper({ user }: { user: User }) {
         role: 'user' | 'system';
         content?: string;
         bets?: BetSelection[];
+        predictions?: (MatchPrediction | null)[];
         isLoading?: boolean;
         isError?: boolean;
         imageData?: string;
+        isAnalyzing?: boolean;
     }>>([]);
+
+    const handleAnalyze = async (msgId: string) => {
+        const message = messages.find(msg => msg.id === msgId);
+
+        if (!message || !message.bets) {
+            toast.error("No bet slip found to analyze");
+            return;
+        }
+
+        // Check if any bets are unavailable
+        const hasUnavailable = message.bets.some(bet => bet.isUnavailable);
+
+        if (hasUnavailable) {
+            toast.error("Cannot analyze slip with unavailable matches. Please upload a more recent bet slip.");
+            return;
+        }
+
+        // Set analyzing state
+        setMessages(prev => prev.map(msg =>
+            msg.id === msgId ? { ...msg, isAnalyzing: true } : msg
+        ));
+
+        try {
+            // Fetch predictions for all matches
+            const teamStrings = message.bets.map(bet => bet.teams);
+            const predictions = await getPredictionsForMatches(teamStrings);
+
+            console.log("Here are the predictions:", predictions);
+
+            // Update message with predictions
+            setMessages(prev => prev.map(msg =>
+                msg.id === msgId
+                    ? { ...msg, predictions, isAnalyzing: false }
+                    : msg
+            ));
+
+            const successfulPredictions = predictions.filter(p => p !== null).length;
+            toast.success(`Generated predictions for ${successfulPredictions} of ${teamStrings.length} matches`);
+        } catch (error) {
+            console.error("Prediction error:", error);
+            setMessages(prev => prev.map(msg =>
+                msg.id === msgId ? { ...msg, isAnalyzing: false } : msg
+            ));
+            toast.error("Failed to generate predictions. Please try again.");
+        }
+    };
 
     const handleScrape = async () => {
         if (!bookingCode) {
@@ -195,7 +244,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                             </div>
 
                             <div className="">
-                                <h3 className="font-semibold text-base md:text-lg tracking-tight">Analyze Your Bet Slip</h3>
+                                <h3 className="font-medium text-base md:text-lg tracking-tight">Analyze Your Bet Slip</h3>
                                 <p className="text-muted-foreground text-sm">
                                     Enter your code below to extract and analyze
                                 </p>
@@ -233,7 +282,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                     maxLength={12}
                                     onChange={(e) => setBookingCode(e.target.value.toUpperCase())}
                                     disabled={isLoading}
-                                    className="border-none shadow-none bg-transparent focus-visible:ring-0 px-2 h-11"
+                                    className="border-none shadow-none bg-transparent focus-visible:ring-0 px-2 h-9 md:h-11"
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter" && !isLoading) {
                                             handleScrape();
@@ -288,7 +337,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                                 </Badge>
                                             </div>
                                             {msg.imageData && (
-                                                <div className="ml-4 md:ml-12 max-w-sm">
+                                                <div className="ml-0 md:ml-12 max-w-sm">
                                                     <div className="relative w-full aspect-9/16 rounded-lg overflow-hidden border">
                                                         <Image
                                                             src={msg.imageData}
@@ -326,15 +375,52 @@ export function BetSlipScraper({ user }: { user: User }) {
                                                     <TicketSkeleton />
                                                 </div>
                                             ) : msg.bets && (
-                                                <div className=" space-y-2.5 md:space-y-4 border rounded-xl px-2 md:px-4 pt-2.5 md:pt-4 pb-2.5 md:pb-4">
-                                                    <div className="flex items-center justify-between px-1">
-                                                        <h3 className="font-semibold text-muted-foreground text-sm">Bet Slip</h3>
-                                                        <Badge variant="secondary">{msg.bets.length}</Badge>
+                                                <>
+                                                    <div className=" space-y-2.5 md:space-y-4 border rounded-xl px-2 md:px-4 pt-2.5 md:pt-4 pb-2.5 md:pb-4">
+                                                        <div className="flex items-center justify-between px-1">
+                                                            <h3 className="font-medium text-muted-foreground text-sm">Bet Slip</h3>
+                                                            <Badge variant="secondary">{msg.bets.length} Matches</Badge>
+                                                        </div>
+                                                        {msg.bets.map((bet, index) => (
+                                                            <TicketItem key={index} bet={bet} />
+                                                        ))}
+                                                        {!msg.predictions && (
+                                                            <div className=" flex items-center justify-center">
+                                                                <Button
+                                                                    onClick={() => handleAnalyze(msg.id)}
+                                                                    disabled={msg.isAnalyzing}
+                                                                    className="gap-2"
+                                                                >
+                                                                    <Zap className="size-4" />
+                                                                    {msg.isAnalyzing ? "Analyzing..." : "Analyze Bet Slip"}
+                                                                </Button>
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                    {msg.bets.map((bet, index) => (
-                                                        <TicketItem key={index} bet={bet} />
-                                                    ))}
-                                                </div>
+
+                                                    {/* Predictions Section */}
+                                                    {msg.predictions && msg.predictions.length > 0 && (
+                                                        <div className=" space-y-2.5 md:space-y-4 border rounded-xl px-2 md:px-4 pt-2.5 md:pt-4 pb-2.5 md:pb-4 bg-primary/5">
+                                                            <div className="flex items-center justify-between px-1">
+                                                                <h3 className="font-medium text-muted-foreground text-sm">Predictions</h3>
+                                                                <Badge variant="secondary">Matches {msg.predictions.filter(p => p !== null).length} Analyzed</Badge>
+                                                            </div>
+                                                            {msg.predictions.map((prediction, index) =>
+                                                                prediction ? (
+                                                                    <PredictionItem
+                                                                        key={index}
+                                                                        prediction={prediction}
+                                                                        teamLogos={msg.bets?.[index]?.teamLogos}
+                                                                    />
+                                                                ) : (
+                                                                    <div key={index} className="p-4 border rounded-xl bg-card text-center">
+                                                                        <p className="text-sm text-muted-foreground">Prediction unavailable for this match</p>
+                                                                    </div>
+                                                                )
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     )}
@@ -343,7 +429,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                         </div>
                     </div>
 
-                    <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 right-0 px-4 bg-linear-to-t from-black via-black to-transparent pb-6 pt-10 z-50">
+                    <div className="fixed bottom-0 max-w-3xl w-full mx-auto  px-4 bg-linear-to-t from-black via-black to-transparent pb-6 pt-10 z-50">
                         {!user.emailVerified &&
                             <aside className=" mb-2">
                                 <EmailVerificationAlert />
@@ -374,7 +460,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                                 maxLength={12}
                                 onChange={(e) => setBookingCode(e.target.value.toUpperCase())}
                                 disabled={isLoading}
-                                className="border-none shadow-none bg-transparent focus-visible:ring-0 px-2 h-11"
+                                className="border-none shadow-none bg-transparent focus-visible:ring-0 px-2 h-9 md:h-11"
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && !isLoading) {
                                         handleScrape();
