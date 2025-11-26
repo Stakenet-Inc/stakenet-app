@@ -1,9 +1,9 @@
 import { Toaster } from "@/components/ui/sonner";
 import { archivo, neuePower } from "@/lib/customFonts";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import "./globals.css";
-
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +31,7 @@ export default function RootLayout({
           `${neuePower.variable} ${archivo.variable}`
         )}
       >
+        <Analytics />
         <Toaster />
         {children}
       </body>
