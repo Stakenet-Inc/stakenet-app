@@ -1,5 +1,6 @@
 import { passwordSchema } from "@/schemas";
 import { betterAuth } from "better-auth";
+import { emailOTP } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { sendEmail } from "./email";
@@ -30,17 +31,17 @@ export const auth = betterAuth({
       });
     },
   },
-  emailVerification: {
-    sendOnSignUp: true,
-    autoSignInAfterVerification: true,
-    async sendVerificationEmail({ user, url }) {
-      await sendEmail({
-        to: user.email,
-        subject: "Verify your email",
-        text: `Click the link to verify your email: ${url}`,
-      });
-    },
-  },
+  plugins: [
+    emailOTP({
+      async sendVerificationOTP({ email, otp, type }: { email: string, otp: string, type: "sign-in" | "email-verification" | "forget-password" }) {
+        await sendEmail({
+          to: email,
+          subject: "Verify your email",
+          text: `Your verification code is ${otp}`,
+        });
+      },
+    }),
+  ],
   user: {
     changeEmail: {
       enabled: true,

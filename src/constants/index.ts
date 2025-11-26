@@ -1,6 +1,6 @@
 import {
     CircleFadingArrowUp,
-    Settings,
+    MessageCircleQuestionMark,
     Sparkles,
     Ticket
 } from "lucide-react";
@@ -25,8 +25,8 @@ export const sidebarBottomItems = [
         label: "Upgrade",
     },
     {
-        icon: Settings,
-        href: "/settings",
-        label: "Settings",
+        icon: MessageCircleQuestionMark,
+        href: "/help",
+        label: "Help",
     },
 ];

@@ -440,7 +440,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                     <div className="fixed bottom-0 max-w-3xl w-full mx-auto left-0 md:left-auto  px-4 bg-linear-to-t from-black via-black to-transparent pb-6 pt-10 z-50">
                         {!user.emailVerified &&
                             <aside className=" mb-2">
-                                <EmailVerificationAlert />
+                                <EmailVerificationAlert email={user.email} />
                             </aside>
                         }
                         <input

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getServerSession } from "@/lib/get-session";
-import { Ellipsis, Forward } from "lucide-react";
+import { Ellipsis, Gift } from "lucide-react";
 import Image from "next/image";
 import { BookieSelector } from "./bookie-selector";
 import MobileSidebar from "./mobile-sidebar";
@@ -23,7 +23,7 @@ export async function Navbar() {
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost">
-            <Forward />
+            <Gift />
             Invite Friends
           </Button>
           <Button variant="ghost" size="icon">

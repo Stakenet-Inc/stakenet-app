@@ -102,61 +102,19 @@ export function Sidebar({ user }: { user?: { name?: string | null; image?: strin
                             </Tooltip>
                         );
                     })}
-                    {user?.image ? (
-                        <Tooltip key="/profile">
-                            <TooltipTrigger asChild>
-                                <Link href="/profile">
-                                    <div className={cn("relative size-10 overflow-clip rounded-xl", isProfileActive ? " ring-2 ring-primary" : "")}>
-                                        <Image
-                                            fill
-                                            src={user.image}
-                                            alt={user.name || "User"}
-                                            className="rounded-xl scale-105 object-cover"
-                                        />
-                                    </div>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent
-                                side="right"
-                                className={cn(
-                                    "ml-5 border-white/10",
-                                    isProfileActive
-                                        ? "bg-muted/80 text-white"
-                                        : "bg-muted/80 text-white"
-                                )}
-                            >
-                                <p>Profile</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    ) : (
-                        <Tooltip key="/profile">
-                            <TooltipTrigger asChild>
-                                <Link href="/profile">
-                                    <div className={cn("relative size-10 overflow-clip rounded-xl", isProfileActive ? " ring-2 ring-primary" : "")}>
-                                        <Image
-                                            fill
-                                            src={"https://unavatar.io/deviantart/spyed"}
-                                            alt="User"
-                                            className="rounded-xl scale-105 object-cover"
-                                        />
-                                    </div>
-                                </Link>
-                            </TooltipTrigger>
-                            <TooltipContent
-                                side="right"
-                                className={cn(
-                                    "ml-5 border-white/10",
-                                    isProfileActive
-                                        ? "bg-muted/80 text-white"
-                                        : "bg-muted/80 text-white"
-                                )}
-                            >
-                                <p>Profile</p>
-                            </TooltipContent>
-                        </Tooltip>
-                    )}
+
+                    <Link href="/settings">
+                        <div className={cn("relative size-10 overflow-clip rounded-xl cursor-pointer hover:ring-2 hover:ring-primary/50 transition-all", isProfileActive ? " ring-2 ring-primary" : "")}>
+                            <Image
+                                fill
+                                src={user?.image || "https://unavatar.io/deviantart/spyed"}
+                                alt={user?.name || "User"}
+                                className="rounded-xl scale-105 object-cover"
+                            />
+                        </div>
+                    </Link>
                 </div>
-            </aside>
-        </TooltipProvider>
+            </aside >
+        </TooltipProvider >
     );
 }
