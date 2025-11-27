@@ -14,7 +14,7 @@ export function LoadingButton({
   ...props
 }: LoadingButtonProps) {
   return (
-    <Button variant="outline" disabled={loading || disabled} {...props}>
+    <Button disabled={loading || disabled} {...props}>
       {loading ? <Loader2 className="animate-spin" /> : children}
     </Button>
   );
