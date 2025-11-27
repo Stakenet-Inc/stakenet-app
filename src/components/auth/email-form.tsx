@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { Separator } from "../ui/separator";
 
 
 
@@ -56,47 +57,44 @@ export function EmailForm({ currentEmail }: EmailFormProps) {
   const loading = form.formState.isSubmitting;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Change Email</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-            <FormField
-              control={form.control}
-              name="newEmail"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>New Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="new@email.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div className=" my-4">
+      <Separator orientation="horizontal" className=" w-full" />
+      <h6 className=" text-base font-medium mb-2 mt-4">Manage Credentials</h6>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+          <FormField
+            control={form.control}
+            name="newEmail"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>New Email</FormLabel>
+                <FormControl>
+                  <Input
+                    type="email"
+                    placeholder="new@email.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-            {error && (
-              <div role="alert" className="text-sm text-red-600">
-                {error}
-              </div>
-            )}
-            {status && (
-              <div role="status" className="text-sm text-green-600">
-                {status}
-              </div>
-            )}
-            <LoadingButton type="submit" loading={loading}>
-              Request change
-            </LoadingButton>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          {error && (
+            <div role="alert" className="text-sm text-red-600">
+              {error}
+            </div>
+          )}
+          {status && (
+            <div role="status" className="text-sm text-green-600">
+              {status}
+            </div>
+          )}
+          <LoadingButton type="submit" loading={loading}>
+            Request change
+          </LoadingButton>
+        </form>
+      </Form>
+    </div>
   );
 }

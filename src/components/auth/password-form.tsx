@@ -17,6 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Separator } from "../ui/separator";
 
 
 type UpdatePasswordValues = z.infer<typeof updatePasswordSchema>;
@@ -57,55 +58,52 @@ export function PasswordForm() {
   const loading = form.formState.isSubmitting;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Change Password</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
-            {/* OAuth users (without a password) can use the "forgot password" flow */}
-            <FormField
-              control={form.control}
-              name="currentPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <PasswordInput {...field} placeholder="Current password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <PasswordInput {...field} placeholder="New password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <div>
+      <Separator orientation="horizontal" className=" w-full mt-6 mb-6" />
 
-            {error && (
-              <div role="alert" className="text-sm text-red-600">
-                {error}
-              </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+          {/* OAuth users (without a password) can use the "forgot password" flow */}
+          <FormField
+            control={form.control}
+            name="currentPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <PasswordInput {...field} placeholder="Current password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            {status && (
-              <div role="status" className="text-sm text-green-600">
-                {status}
-              </div>
+          />
+          <FormField
+            control={form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <PasswordInput {...field} placeholder="New password" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-            <LoadingButton type="submit" loading={loading}>
-              Change password
-            </LoadingButton>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+          />
+
+          {error && (
+            <div role="alert" className="text-sm text-red-600">
+              {error}
+            </div>
+          )}
+          {status && (
+            <div role="status" className="text-sm text-green-600">
+              {status}
+            </div>
+          )}
+          <LoadingButton type="submit" loading={loading}>
+            Change password
+          </LoadingButton>
+        </form>
+      </Form>
+    </div>
   );
 }

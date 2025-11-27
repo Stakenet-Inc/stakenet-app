@@ -53,7 +53,7 @@ export const EmailVerificationAlert = ({ email }: { email: string }) => {
 
     return (
         <>
-            <div className="rounded-xl border border-input/20 md:pl-5 pl-4 pr-4 md:pr-2 py-4 md:py-4 bg-[#131313] relative">
+            <div className="rounded-xl border border-input/30 md:pl-5 pl-4 pr-4 md:pr-2 py-4 md:py-4 bg-[#131313] relative">
                 <div className="flex flex-col md:flex-row items-center justify-between">
                     <div className="flex flex-col items-start w-full">
                         <p className=" text-sm">

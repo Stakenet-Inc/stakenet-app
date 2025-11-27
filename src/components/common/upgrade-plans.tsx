@@ -26,7 +26,7 @@ const UpgradePlans = () => {
                 },
                 body: JSON.stringify({
                     plan: "PRO",
-                    amount: 50, // GH₵50
+                    amount: 50,
                 }),
             });
 

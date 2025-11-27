@@ -1,8 +1,8 @@
 import { passwordSchema } from "@/schemas";
 import { betterAuth } from "better-auth";
-import { emailOTP } from "better-auth/plugins";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { APIError, createAuthMiddleware } from "better-auth/api";
+import { emailOTP } from "better-auth/plugins";
 import { sendEmail } from "./email";
 import prisma from "./prisma";
 
@@ -22,7 +22,6 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
-    // requireEmailVerification: true, // Only if you want to block login completely
     async sendResetPassword({ user, url }) {
       await sendEmail({
         to: user.email,

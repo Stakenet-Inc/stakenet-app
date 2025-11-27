@@ -244,7 +244,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                             </div>
 
                             <div className="">
-                                <h3 className="font-medium text-base md:text-lg tracking-tight">Analyze Your Bet Slip</h3>
+                                <h3 className="font-medium text-xl md:text-2xl">Analyze Your Betslip</h3>
                                 <p className="text-muted-foreground text-sm">
                                     Enter your code below to extract and analyze
                                 </p>

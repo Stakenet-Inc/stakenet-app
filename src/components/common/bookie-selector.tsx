@@ -20,7 +20,7 @@ import betwayLogo from "@/assets/betway.png";
 import footballComLogo from "@/assets/football.png";
 import mSportLogo from "@/assets/msport.png";
 import sportybetLogo from "@/assets/sportybet.png";
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const bookies = [
     {
@@ -67,7 +67,7 @@ const bookies = [
     },
 ];
 
-export function BookieSelector() {
+export function BookieSelector({ userPlan }: { userPlan?: string | null }) {
     const [open, setOpen] = React.useState(false);
     const [selectedBookie, setSelectedBookie] = React.useState("sportybet");
     const [searchQuery, setSearchQuery] = React.useState("");
@@ -82,14 +82,20 @@ export function BookieSelector() {
             bookie.url.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const isProPlan = userPlan === "PRO";
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
+                    disabled={!isProPlan}
                     variant="ghost"
                     role="combobox"
                     aria-expanded={open}
-                    className=" w-fit md:w-52 h-[38px] justify-between rounded-full bg-[#131313] border border-input/20 has-[>svg]:px-0 has-[>svg]:pl-1.5 has-[>svg]:pr-2.5"
+                    className={cn(
+                        "w-fit h-[38px] justify-between rounded-full bg-[#131313] border border-input/20 disabled:opacity-100 disabled:cursor-not-allowed",
+                        isProPlan ? "md:w-52 has-[>svg]:px-0 has-[>svg]:pl-1.5 has-[>svg]:pr-2.5" : "md:w-fit pl-1.5"
+                    )}
                 >
                     <div className="flex items-center gap-2 md:gap-3">
                         {currentBookie && (
@@ -109,7 +115,9 @@ export function BookieSelector() {
                             {currentBookie?.name}
                         </span>
                     </div>
-                    <ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
+                    {isProPlan && (
+                        <ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
+                    )}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="pt-0 px-0 pb-2 bg-[#131313] border border-input/20 w-52" align={isMobile ? "center" : "start"}>
