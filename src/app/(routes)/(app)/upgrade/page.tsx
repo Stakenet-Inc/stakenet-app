@@ -45,7 +45,7 @@ const UpgradePage = () => {
         }
     };
     return (
-        <main className="mx-auto w-full max-w-xl py-12 flex flex-col justify-between h-[calc(100vh-4rem)] md:h-fit">
+        <main className="mx-auto w-full max-w-xl py-12 flex flex-col justify-between h-[calc(100dvh-5rem)] md:h-fit">
             <div>
                 <h1 className=" text-xl md:text-2xl font-semibold">Upgrade</h1>
 
