@@ -48,7 +48,6 @@ const UpgradePage = () => {
         <main className="mx-auto w-full max-w-xl py-12 flex flex-col justify-between h-[calc(100dvh-5rem)] md:h-fit">
             <div>
                 <h1 className=" text-xl md:text-2xl font-semibold">Upgrade</h1>
-
                 <div className=" mt-4 md:mt-6 mb-8">
                     <RadioGroup defaultValue="pro" className="grid gap-2.5" onValueChange={setSelectedPlan}>
                         <Label
