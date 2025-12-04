@@ -26,7 +26,7 @@ const Hero = () => {
     return (
         <section className="w-full pt-20">
             <div className=" max-w-6xl mx-auto w-full flex flex-col items-center z-50 relative">
-                <div className=" size-16 md:size-20 relative">
+                <div className=" size-14 md:size-20 relative">
                     <Image
                         className=" object-contain"
                         fill
