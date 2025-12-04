@@ -1,6 +1,6 @@
 "use client";
 
-import stakenetLogo from "@/assets/stakenet.png";
+import stakenetLogo from "@/assets/logo.png";
 import {
     Sheet,
     SheetClose,
@@ -28,12 +28,16 @@ export default function MobileSidebar() {
             <SheetContent side="left" className="w-72 bg-background p-0">
                 <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 <div className="flex flex-col h-full py-6 text-white px-4">
-                    <div className="mb-8 px-4 flex items-center gap-2 justify-start">
-                        <div className="relative size-7">
-                            <Image fill src={stakenetLogo} alt="Stakenet" className="object-contain" />
+                    <Link href="/" className=" mb-8 -ml-4">
+                        <div className=" relative h-10 w-[172px]  scale-95">
+                            <Image
+                                className=" object-contain"
+                                fill
+                                src={stakenetLogo}
+                                alt="Stakenet logo"
+                            />
                         </div>
-                        <span className=" text-xl font-medium tracking-tight">Stakenet</span>
-                    </div>
+                    </Link>
 
                     <nav className="flex flex-1 flex-col gap-2">
                         {sidebarTopItems.map((item) => {

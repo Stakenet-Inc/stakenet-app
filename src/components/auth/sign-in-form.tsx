@@ -98,7 +98,7 @@ export function SignInForm() {
   return (
     <Card className="w-full max-w-sm z-999">
       <CardHeader>
-        <div className=" size-9 md:size-10 relative mb-2 mt-2">
+        <div className=" size-12 md:size-14 relative mb-2 mt-2">
           <Image fill src={stakenetLogo} alt="Stakenet" className="object-contain" />
         </div>
         <CardTitle>Welcome Back</CardTitle>

@@ -1,6 +1,6 @@
 "use client";
 
-import stakenetLogo from "@/assets/stakenet.png";
+import stakenetLogo from "@/assets/stakenet-d.png";
 import {
     Tooltip,
     TooltipContent,

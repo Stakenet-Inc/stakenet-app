@@ -239,7 +239,7 @@ export function BetSlipScraper({ user }: { user: User }) {
                 <div className="flex-1 flex flex-col items-center justify-center h-full min-h-[calc(100dvh-100px)] md:min-h-[calc(100vh-240px)] md:pb-20">
                     <div className="flex flex-1 flex-col items-center pt-8 md:pt-0 h-full justify-between md:justify-center text-center md:space-y-4 relative z-10 w-full max-w-2xl md:px-4">
                         <div className=" w-full flex flex-col items-center">
-                            <div className=" size-9 md:size-10 relative mb-4">
+                            <div className=" size-14 md:size-14 relative mb-2 md:mb-4">
                                 <Image fill src={stakenetLogo} alt="Stakenet" className="object-contain" />
                             </div>
 
