@@ -1,5 +1,7 @@
 import grid from "@/assets/grid-pattern.webp";
 import Features from "@/sections/features";
+import FeaturesMobile from "@/sections/features-mobile";
+import Footer from "@/sections/footer";
 import Hero from "@/sections/hero";
 import Navbar from "@/sections/navbar";
 import Image from "next/image";
@@ -14,6 +16,8 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Features />
+      <FeaturesMobile />
+      <Footer />
     </main>
   );
 }

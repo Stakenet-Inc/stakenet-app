@@ -12,7 +12,7 @@ const Navbar = () => {
 
             <nav className=" w-full flex items-center justify-between max-w-7xl mx-auto">
                 <Link href="/">
-                    <div className=" relative h-10 w-[180px]">
+                    <div className=" relative h-9 md:h-[38px] w-[180px]">
                         <Image
                             className=" object-contain"
                             fill
@@ -21,15 +21,19 @@ const Navbar = () => {
                         />
                     </div>
                 </Link>
-                <div className="hidden lg:inline-flex items-center gap-6">
+                <div className="hidden lg:inline-flex items-center gap-8 text-sm">
                     <p>Home</p>
                     <p>Features</p>
-                    <p>About</p>
+                    <p>Changelog</p>
+                    <p>Pricing</p>
                     <p>FAQs</p>
                 </div>
                 <div className=" inline-flex items-center gap-2">
                     <Link href="/analyze">
-                        <Button>Get Started</Button>
+                        <Button>Dashboard</Button>
+                    </Link>
+                    <Link className=" hidden md:block" href="/analyze">
+                        <Button variant="outline">Sign In</Button>
                     </Link>
                     <Button className="md:hidden" variant="ghost" size="icon">
                         <Menu className=" size-5" />

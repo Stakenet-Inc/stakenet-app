@@ -6,9 +6,9 @@ import Image from "next/image";
 import { useRef } from "react";
 
 const Features = () => {
-  const featureOne = "Feature One";
-  const featureTwo = "Feature Two";
-  const featureThree = "Feature Three";
+  const featureOne = "Analyze Your Betslip";
+  const featureTwo = "Instant Bet Slip Retrieval";
+  const featureThree = "AI-Powered Match Predictions";
 
   const feature = useRef(null);
   const isInView = useInView(feature);
@@ -24,7 +24,7 @@ const Features = () => {
   const y3 = useTransform(scrollYProgress, [0, 1], ["60%", "-60%"]);
 
   return (
-    <section className="relative -mt-20">
+    <section className="relative -mt-32 hidden lg:block">
       <div
         id="features"
         ref={targetRef}
@@ -36,12 +36,12 @@ const Features = () => {
               <Image
                 fill
                 className=" object-contain"
-                src="/image/feature-one.png"
+                src="/image/1.webp"
                 alt="Feature One"
               />
             </div>
             <div ref={feature} className="flex flex-col items-start mt-8 px-4">
-              <h4 className=" text-2xl font-semibold">
+              <h4 className=" text-xl font-medium">
                 {featureOne.split(" ").map((word, index) => {
                   return (
                     <span
@@ -63,11 +63,11 @@ const Features = () => {
               <motion.p
                 variants={opacity}
                 animate={isInView ? "open" : "closed"}
-                className=" opacity-70 text-lg"
+                className="text-base text-muted-foreground"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-                aliquid inventore consequatur totam nihil? Officia dolor iusto
-                maxime labore corporis.
+                Enter your booking code from any supported bookmaker to instantly
+                retrieve and analyze your bet slip. Get comprehensive insights and
+                predictions for all your selections in one place.
               </motion.p>
             </div>
           </motion.div>
@@ -76,12 +76,12 @@ const Features = () => {
               <Image
                 fill
                 className=" object-contain"
-                src="/image/feature-two.png"
+                src="/image/3.webp"
                 alt="Feature Two"
               />
             </div>
             <div ref={feature} className="flex flex-col items-start mt-8 px-4">
-              <h4 className=" text-2xl font-semibold">
+              <h4 className=" text-xl font-medium">
                 {featureTwo.split(" ").map((word, index) => {
                   return (
                     <span
@@ -103,11 +103,11 @@ const Features = () => {
               <motion.p
                 variants={opacity}
                 animate={isInView ? "open" : "closed"}
-                className=" opacity-70 text-lg"
+                className="text-base text-muted-foreground"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-                aliquid inventore consequatur totam nihil? Officia dolor iusto
-                maxime labore corporis.
+                Seamlessly connect with popular bookmakers like Sportybet, Betway,
+                and more. Your bet slips are retrieved instantly with all match
+                details, odds, and selections perfectly organized.
               </motion.p>
             </div>
           </motion.div>
@@ -116,12 +116,12 @@ const Features = () => {
               <Image
                 fill
                 className=" object-contain"
-                src="/image/feature-three.png"
+                src="/image/4.webp"
                 alt="Feature Three"
               />
             </div>
             <div ref={feature} className="flex flex-col items-start mt-8 px-4">
-              <h4 className=" text-2xl font-semibold">
+              <h4 className=" text-xl font-medium">
                 {featureThree.split(" ").map((word, index) => {
                   return (
                     <span
@@ -143,11 +143,11 @@ const Features = () => {
               <motion.p
                 variants={opacity}
                 animate={isInView ? "open" : "closed"}
-                className=" opacity-70 text-lg"
+                className="text-base text-muted-foreground"
               >
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum
-                aliquid inventore consequatur totam nihil? Officia dolor iusto
-                maxime labore corporis.
+                Get detailed match predictions powered by advanced AI analysis.
+                View confidence levels, likely scores, and comprehensive statistics
+                to make informed betting decisions with ease.
               </motion.p>
             </div>
           </motion.div>
